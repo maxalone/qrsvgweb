@@ -23,6 +23,13 @@
     }
     #qr {
       margin-top: 2em;
+      min-height: 350px;
+    }
+    #qr svg {
+      width: 300px !important;
+      height: 300px !important;
+      border: 1px solid #ccc;
+      background: white;
     }
     #downloadBtn {
       margin-top: 1em;
@@ -55,7 +62,16 @@
         const response = await fetch(`https://qrsvg.onrender.com/qr?data=${encodeURIComponent(data)}`);
         if (!response.ok) throw new Error("Errore nella generazione");
 
-        const svg = await response.text();
+        let svg = await response.text();
+        
+        // Forza colori e dimensioni
+        svg = svg.replace(/<path/g, '<path fill="black"');
+        svg = svg.replace(/<rect/g, '<rect fill="black"');
+        
+        if (!svg.includes('viewBox')) {
+          svg = svg.replace('<svg', '<svg viewBox="0 0 300 300"');
+        }
+        
         currentSVG = svg;
         qrDiv.innerHTML = svg;
         downloadBtn.style.display = "inline-block";

@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Generatore QR SVG</title>
+  <title>Generatore QR Code SVG</title>
   <style>
     body {
       font-family: sans-serif;
@@ -19,36 +19,61 @@
       padding: 0.5em 1em;
       font-size: 1em;
       margin-top: 1em;
+      cursor: pointer;
     }
     #qr {
       margin-top: 2em;
+    }
+    #downloadBtn {
+      margin-top: 1em;
+      display: none;
     }
   </style>
 </head>
 <body>
   <h1>Generatore QR Code SVG</h1>
   <p>Inserisci un testo o URL da convertire:</p>
-  <input type="text" id="qrInput" placeholder="https://spaziogenesi.org/">
+  <input type="text" id="qrInput" placeholder="https://massimo.art">
   <br>
   <button onclick="generateQR()">Genera</button>
 
   <div id="qr"></div>
+  <button id="downloadBtn" onclick="downloadSVG()">Scarica SVG</button>
 
   <script>
+    let currentSVG = "";
+
     async function generateQR() {
       const data = document.getElementById("qrInput").value;
       const qrDiv = document.getElementById("qr");
+      const downloadBtn = document.getElementById("downloadBtn");
+
       qrDiv.innerHTML = "Caricamento...";
+      downloadBtn.style.display = "none";
 
       try {
         const response = await fetch(`https://qrsvg.onrender.com/qr?data=${encodeURIComponent(data)}`);
         if (!response.ok) throw new Error("Errore nella generazione");
 
         const svg = await response.text();
+        currentSVG = svg;
         qrDiv.innerHTML = svg;
+        downloadBtn.style.display = "inline-block";
       } catch (err) {
         qrDiv.innerHTML = `<p style="color:red;">Errore: ${err.message}</p>`;
       }
+    }
+
+    function downloadSVG() {
+      const blob = new Blob([currentSVG], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "qr-code.svg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     }
   </script>
 </body>

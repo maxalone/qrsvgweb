@@ -1,0 +1,5 @@
+name = "qrsvgweb"
+compatibility_date = "2025-10-24"
+
+[site]
+bucket = "./"

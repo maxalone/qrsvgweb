@@ -35,18 +35,6 @@
       margin-top: 1em;
       display: none;
     }
-    #debug {
-      background: #f0f0f0;
-      padding: 10px;
-      margin-top: 20px;
-      text-align: left;
-      font-family: monospace;
-      font-size: 12px;
-      max-height: 300px;
-      overflow: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
   </style>
 </head>
 <body>
@@ -57,7 +45,7 @@
   <button onclick="generateQR()">Genera</button>
 
   <div id="qr"></div>
-  <div id="debug"></div>
+  
   <button id="downloadBtn" onclick="downloadSVG()">Scarica SVG</button>
 
   <script>
@@ -67,29 +55,20 @@
       const data = document.getElementById("qrInput").value;
       const qrDiv = document.getElementById("qr");
       const downloadBtn = document.getElementById("downloadBtn");
-      const debugDiv = document.getElementById("debug");
 
       qrDiv.innerHTML = "Caricamento...";
       downloadBtn.style.display = "none";
-      debugDiv.innerHTML = "";
 
       try {
         const response = await fetch(`https://qrsvg.onrender.com/qr?data=${encodeURIComponent(data)}`);
-        
-        debugDiv.innerHTML = `<strong>Status:</strong> ${response.status}<br>`;
-        debugDiv.innerHTML += `<strong>Content-Type:</strong> ${response.headers.get('content-type')}<br><br>`;
-        
-        if (!response.ok) throw new Error("Errore nella generazione");
 
+        if (!response.ok) throw new Error("Errore nella generazione");
         const svg = await response.text();
-        
         
         // Mostra se ci sono tag SVG
         const hasSvgTag = svg.includes('<svg');
         const hasPathTag = svg.includes('<path') || svg.includes('<rect');
-        debugDiv.innerHTML += `<strong>Ha tag &lt;svg&gt;:</strong> ${hasSvgTag}<br>`;
-        debugDiv.innerHTML += `<strong>Ha elementi (path/rect):</strong> ${hasPathTag}<br>`;
-        
+
         currentSVG = svg;
         qrDiv.innerHTML = svg;
         downloadBtn.style.display = "inline-block";

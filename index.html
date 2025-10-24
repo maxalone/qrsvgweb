@@ -84,7 +84,8 @@
         const svg = await response.text();
         
         debugDiv.innerHTML += `<strong>Lunghezza SVG:</strong> ${svg.length} caratteri<br><br>`;
-        debugDiv.innerHTML += `<strong>SVG ricevuto:</strong><br>${svg.substring(0, 500)}...<br><br>`;
+        
+        debugDiv.innerHTML += `<strong>SVG ricevuto (completo):</strong><br>${svg}<br><br>`;
         
         // Mostra se ci sono tag SVG
         const hasSvgTag = svg.includes('<svg');

@@ -2,63 +2,121 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GENESI QR Code Generator</title>
   <style>
     body {
-      font-family: sans-serif;
-      max-width: 600px;
-      margin: 2em auto;
+      font-family: system-ui, sans-serif;
+      max-width: 480px;
+      margin: 1.5em auto;
+      padding: 0 1em;
       text-align: center;
+      line-height: 1.4;
     }
+
+    h1 {
+      font-size: 1.4em;
+      margin-bottom: 0.5em;
+    }
+
+    p {
+      font-size: 0.95em;
+      color: #333;
+    }
+
     input[type="text"] {
-      width: 80%;
-      padding: 0.5em;
+      width: 100%;
+      padding: 0.7em;
       font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      margin-top: 0.5em;
     }
+
     select {
-      margin-top: 1em;
-      padding: 0.4em;
+      width: 100%;
+      margin-top: 0.8em;
+      padding: 0.6em;
       font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #fff;
     }
+
     button {
-      padding: 0.5em 1em;
-      font-size: 1em;
+      width: 100%;
+      padding: 0.8em;
+      font-size: 1.05em;
       margin-top: 1em;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
+      background-color: #111;
+      color: white;
+      transition: background 0.2s;
     }
+
+    button:hover {
+      background-color: #333;
+    }
+
     #qr {
       margin-top: 2em;
-      min-height: 350px;
+      min-height: 280px;
     }
+
     #qr svg, #qr img {
-      width: 300px !important;
-      height: 300px !important;
+      width: 90%;
+      max-width: 300px;
+      height: auto;
       border: 1px solid #ccc;
       background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
+
     #downloadBtn {
-      margin-top: 1em;
       display: none;
+      background-color: #0078d7;
+    }
+
+    #downloadBtn:hover {
+      background-color: #005fa3;
+    }
+
+    .footer {
+      margin-top: 2em;
+      font-size: 0.8em;
+      color: #666;
     }
   </style>
 </head>
 <body>
   <h1>GENESI Generatore QR Code</h1>
-  <p>Inserisci un testo o URL da convertire:</p>
-  <p>Abbi pazienza, il cloud del servizio è gratuito quindi parcheggia la risorsa per risparmiare.</br>il primo utilizzo dopo un'ora di fermo potrebbe chiedere 20/30 secondi.</p>
+  <p>
+    Il cloud del servizio è gratuito — parcheggia la risorsa per risparmiare.<br>
+    Al primo utilizzo dopo un’ora di fermo potrebbe richiedere 20–30 secondi.
+  </p>
+
+  <label for="qrInput"><strong>Inserisci un testo o URL da convertire:</strong></label>
   <input type="text" id="qrInput" placeholder="https://spaziogenesi.org/" value="https://spaziogenesi.org/">
-  <br>
+
   <label for="formatSelect">Formato:</label>
   <select id="formatSelect">
     <option value="svg">SVG</option>
     <option value="png">PNG</option>
   </select>
-  <br>
-  <button onclick="generateQR()">Genera</button>
+
+  <button onclick="generateQR()">Genera QR</button>
 
   <div id="qr"></div>
   
-  <button id="downloadBtn" onclick="downloadQR()">Scarica</button>
+  <button id="downloadBtn" onclick="downloadQR()">📥 Scarica</button>
+
+  <div class="footer">
+    © Spazio Genesi – QR Generator v2
+  </div>
 
   <script>
     let currentData = "";
@@ -66,12 +124,17 @@
     let currentBlob = null;
 
     async function generateQR() {
-      const data = document.getElementById("qrInput").value;
+      const data = document.getElementById("qrInput").value.trim();
       const format = document.getElementById("formatSelect").value;
       const qrDiv = document.getElementById("qr");
       const downloadBtn = document.getElementById("downloadBtn");
 
-      qrDiv.innerHTML = "Caricamento...";
+      if (!data) {
+        qrDiv.innerHTML = `<p style="color:red;">Inserisci un testo o URL.</p>`;
+        return;
+      }
+
+      qrDiv.innerHTML = "⏳ Generazione in corso...";
       downloadBtn.style.display = "none";
 
       try {
@@ -84,7 +147,6 @@
           qrDiv.innerHTML = svgText;
           currentBlob = new Blob([svgText], { type: "image/svg+xml" });
         } else {
-          // PNG
           const blob = await response.blob();
           const url = URL.createObjectURL(blob);
           qrDiv.innerHTML = `<img src="${url}" alt="QR Code PNG">`;

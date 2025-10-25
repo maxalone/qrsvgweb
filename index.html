@@ -45,6 +45,7 @@
 <body>
   <h1>GENESI Generatore QR Code</h1>
   <p>Inserisci un testo o URL da convertire:</p>
+  <p>Abbi pazienza, il cloud del servizio è gratuito quindi parcheggia la risorsa per risparmiare.</br>il primo utilizzo dopo un'ora di fermo potrebbe chiedere 20/30 secondi.</p>
   <input type="text" id="qrInput" placeholder="https://spaziogenesi.org/" value="https://spaziogenesi.org/">
   <br>
   <label for="formatSelect">Formato:</label>
@@ -70,7 +71,7 @@
       const qrDiv = document.getElementById("qr");
       const downloadBtn = document.getElementById("downloadBtn");
 
-      qrDiv.innerHTML = "Caricamento...<br>Abbi pazienza, il cloud del servizio è gratuito quindi parcheggia la risorsa.</br>il primo utilizzo potrebbe chiedere 20/30 secondi  .";
+      qrDiv.innerHTML = "Caricamento...";
       downloadBtn.style.display = "none";
 
       try {

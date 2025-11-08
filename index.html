@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Generatore di codici QR gratuito online by SPAZIO GENESI. Crea codici QR in formato SVG o PNG per URL, testi e altro.">
   <title>GENESI QR Code Generator</title>
   <style>
     body {
@@ -95,7 +96,7 @@
 <body>
   <h1>GENESI Generatore QR Code</h1>
   <p>
-    Il cloud del servizio è gratuito — parcheggia la risorsa per risparmiare.<br>
+    Il cloud del servizio è gratuito quindi la risorsa viene parcheggiata per risparmiare.<br>
     Al primo utilizzo dopo un’ora di fermo potrebbe richiedere 20–30 secondi.
   </p>
 
@@ -115,7 +116,7 @@
   <button id="downloadBtn" onclick="downloadQR()">📥 Scarica</button>
 
   <div class="footer">
-    © Spazio Genesi – QR Generator v2
+    © <a href="https://spaziogenesi.org/" target="_blank">Genesi</a> – QR Generator v2
   </div>
 
   <script>
@@ -134,7 +135,7 @@
         return;
       }
 
-      qrDiv.innerHTML = "⏳ Generazione in corso...";
+      qrDiv.innerHTML = "⏳ Generazione in corso...abbi pazienza.";
       downloadBtn.style.display = "none";
 
       try {
